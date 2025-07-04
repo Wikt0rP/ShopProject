@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 public class EmailValidationTests {
@@ -17,7 +18,7 @@ public class EmailValidationTests {
     UserRepository mockUserRepo;
     @InjectMocks
     private EmailValidation emailValidation;
-
+    private final String goodMail = "test@mail.com";
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
@@ -25,9 +26,33 @@ public class EmailValidationTests {
 
     @Test
     void testValidMailUserExists(){
-        String mail = "test@mail.com";
-        when(mockUserRepo.existsByEmail(mail)).thenReturn(true);
-        boolean result = emailValidation.isValidEmail(mail);
-        assertFalse(result);
+        when(mockUserRepo.existsByEmail(goodMail)).thenReturn(true);
+        assertFalse(emailValidation.isValidEmail(goodMail));
+    }
+
+    @Test
+    void testValidUniqueMail(){
+        when(mockUserRepo.existsByEmail(goodMail)).thenReturn(false);
+        assertTrue(emailValidation.isValidEmail(goodMail));
+    }
+
+    @Test
+    void testInvalidMailSimpleText(){
+        when(mockUserRepo.existsByEmail(goodMail)).thenReturn(false);
+        String mail = "simpleText";
+        assertFalse(emailValidation.isValidEmail(mail));
+    }
+
+    @Test
+    void testInvalidMailCom(){
+        when(mockUserRepo.existsByEmail(goodMail)).thenReturn(false);
+        String mail = "simpleText.com";
+        assertFalse(emailValidation.isValidEmail(mail));
+    }
+    @Test
+    void testInvalidMailAt(){
+        when(mockUserRepo.existsByEmail(goodMail)).thenReturn(false);
+        String mail = "simpleText@com";
+        assertFalse(emailValidation.isValidEmail(mail));
     }
 }
