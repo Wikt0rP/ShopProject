@@ -7,6 +7,8 @@ import com.example.shopproject.validation.EmailValidation;
 import com.example.shopproject.validation.PasswordValidation;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -33,5 +35,18 @@ public class UserService {
 
         userRepository.save(user);
         return user;
+    }
+
+    public boolean deleteUser(Long userId){
+        if(userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
     }
 }

@@ -13,6 +13,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -33,6 +36,8 @@ public class UserServiceTests {
         createUserRequest =  new  CreateUserRequest("username", "Surname", "mail@mail.com", "password123");
     }
 
+
+    //User add TESTS
     @Test
     void testCreateUserWithValidData() {
         when(passwordValidation.isValidPassword(createUserRequest.getPassword(), createUserRequest.getName(), 3)).thenReturn(true);
@@ -66,4 +71,31 @@ public class UserServiceTests {
     }
 
 
+    //User DELETE tests
+    @Test
+    void testUserDeleteSuccessful(){
+        Long userId = 1L;
+        when(userRepository.existsById(userId)).thenReturn(true);
+        boolean response = userService.deleteUser(userId);
+        assertTrue(response);
+    }
+
+    @Test
+    void testUserDeleteFailedNotExists(){
+        Long userId = 1L;
+        when(userRepository.existsById(userId)).thenReturn(false);
+        boolean response = userService.deleteUser(userId);
+        assertFalse(response);
+    }
+
+    //Users getAllUsers tests
+    @Test
+    void getAllUsersSuccessful(){
+        List<User> fakeResponse = new ArrayList<>();
+        fakeResponse.add(new User("Name", "Surname", "Email", "Password"));
+        fakeResponse.add(new User("Name2", "Surname2", "Email2", "Password2"));
+        fakeResponse.add(new User("Name3", "Surname3", "Email3", "Password3"));
+        when(userRepository.findAll()).thenReturn(fakeResponse);
+        assertNotNull(userService.getAllUsers());
+    }
 }
