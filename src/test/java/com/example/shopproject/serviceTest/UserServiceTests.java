@@ -30,6 +30,7 @@ public class UserServiceTests {
     @InjectMocks
     private UserService userService;
     private CreateUserRequest createUserRequest;
+
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
