@@ -1,7 +1,11 @@
 package com.example.shopproject.controller;
 
+import com.example.shopproject.request.CreateUserRequest;
+import com.example.shopproject.request.UserLoginRequest;
 import com.example.shopproject.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +24,22 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam("email") String email, @RequestParam("password") String password) {
-        return userService.login(email, password);
+    public String login(@RequestBody UserLoginRequest userLoginRequest,  HttpSession session) {
+        return userService.login(userLoginRequest, session);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody CreateUserRequest createUserRequest) {
+        return userService.createUser(createUserRequest);
+    }
+
+    @GetMapping("/login-status")
+    public String checkLoginStatus(Authentication authentication) {
+        if (authentication != null && authentication.isAuthenticated()
+                && !(authentication instanceof AnonymousAuthenticationToken)) {
+            return authentication.getName();
+        }
+
+        return "not logged";
     }
 }

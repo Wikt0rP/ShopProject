@@ -2,16 +2,16 @@ package com.example.shopproject.security;
 
 import com.example.shopproject.entity.User;
 import com.example.shopproject.repository.UserRepository;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-
-public class UserDetailsService implements org.springframework.security.core.userdetails.UserDetailsService {
+@Service
+public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
-    public UserDetailsService(UserRepository userRepository){
+    public UserDetailsServiceImpl(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 

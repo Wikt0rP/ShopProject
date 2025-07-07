@@ -28,11 +28,11 @@ public class User {
     @JsonManagedReference
     private Set<Role> roles = new HashSet<>();
 
-    public User (String name, String surname, String email, String password) {
+    public User (String name, String surname, String email, String password, Role role) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.password = password;
-        roles.add(new Role(ERole.ROLE_USER));
+        this.roles.add(role);
     }
 }

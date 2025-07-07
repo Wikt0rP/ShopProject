@@ -1,5 +1,7 @@
 package com.example.shopproject.security;
 
+import com.example.shopproject.entity.ERole;
+import com.example.shopproject.entity.Role;
 import com.example.shopproject.entity.User;
 import com.example.shopproject.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,11 +19,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ActiveProfiles("test")
-public class UserDetailsServiceTest {
+public class UserDetailsServiceImplTest {
     @Mock
     private UserRepository userRepository;
     @InjectMocks
-    private UserDetailsService userDetailsService;
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     @BeforeEach
     void setUp(){
@@ -31,9 +33,9 @@ public class UserDetailsServiceTest {
     @Test
     void successfulLoadUserDetails(){
         when(userRepository.findByEmail(any(String.class)))
-                .thenReturn(Optional.of(new User("Name", "Surname", "example@mail.com", "password")));
+                .thenReturn(Optional.of(new User("Name", "Surname", "example@mail.com", "password", new Role(ERole.ROLE_USER))));
 
-        assertNotNull(userDetailsService.loadUserByUsername("example@mail.com"));
+        assertNotNull(userDetailsServiceImpl.loadUserByUsername("example@mail.com"));
     }
 
     @Test
@@ -41,7 +43,7 @@ public class UserDetailsServiceTest {
         when(userRepository.findByEmail(any(String.class)))
                 .thenReturn(Optional.empty());
         assertThrows(UsernameNotFoundException.class, () -> {
-            userDetailsService.loadUserByUsername("example@mail.com");
+            userDetailsServiceImpl.loadUserByUsername("example@mail.com");
         });
     }
 }
