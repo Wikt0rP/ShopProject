@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     @JsonManagedReference
     private Set<Role> roles = new HashSet<>();
+
 
     public User (String name, String surname, String email, String password, Role role) {
         this.name = name;
