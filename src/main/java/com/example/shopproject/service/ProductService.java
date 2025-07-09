@@ -6,10 +6,8 @@ import com.example.shopproject.exception.UserNotAuthorizedException;
 import com.example.shopproject.exception.UserNotFoundException;
 import com.example.shopproject.repository.ProductRepository;
 import com.example.shopproject.request.CreateProductRequest;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service 
